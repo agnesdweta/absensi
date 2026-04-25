@@ -14,9 +14,11 @@
     </div>
 
     <div class="col-md-6">
-        <a href="<?= base_url('cuti') ?>" class="btn btn-warning btn-block">
+        <?php if(session()->get('role') == 'user'): ?>
+        <a href="<?= base_url('cuti/create') ?>" class="btn btn-warning btn-block">
             <i class="fas fa-calendar-plus"></i> Ajukan Cuti
         </a>
+        <?php endif; ?>
     </div>
 
 </div>

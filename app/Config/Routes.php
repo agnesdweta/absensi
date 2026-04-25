@@ -30,7 +30,10 @@ $routes->get('/absensi/edit/(:num)', 'Absensi::edit/$1');
 $routes->post('/absensi/update/(:num)', 'Absensi::update/$1');
 
 // Cuti
+// CUTI
 $routes->get('/cuti', 'Cuti::index');
+$routes->get('/cuti/create', 'Cuti::create');
+$routes->post('/cuti/store', 'Cuti::store');
 $routes->get('/cuti/approve/(:num)', 'Cuti::approve/$1');
 $routes->get('/cuti/reject/(:num)', 'Cuti::reject/$1');
 

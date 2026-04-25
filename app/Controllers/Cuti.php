@@ -19,26 +19,58 @@ class Cuti extends BaseController
         $end    = $this->request->getGet('end');
         $status = $this->request->getGet('status');
 
-        $query = $model;
+        $builder = $model->builder();
 
         // filter tanggal (range)
         if ($start && $end) {
-            $query = $query
-                ->where('tanggal_mulai <=', $end)
-                ->where('tanggal_selesai >=', $start);
-        }
+        $builder->where('tanggal_mulai <=', $end);
+        $builder->where('tanggal_selesai >=', $start);
+    }
 
         // filter status
         if ($status && $status !== 'all') {
-            $query = $query->where('status', $status);
+        $builder->where('status', $status);
+    }
+
+    $data['cuti'] = $builder->orderBy('id', 'DESC')->get()->getResultArray();
+    $data['start']  = $start;
+    $data['end']    = $end;
+    $data['status'] = $status ?? 'all';
+
+    return view('cuti', $data);
+}
+    // =========================
+    // FORM AJUKAN CUTI
+    // =========================
+    public function create()
+    {
+        if(session()->get('role') != 'user'){
+            return redirect()->to('/cuti')->with('error','Akses ditolak');
+        }
+        return view('cuti_create');
+    }
+    // =========================
+    // SIMPAN CUTI
+    // =========================
+    public function store()
+    {
+        if(session()->get('role') != 'user'){
+            return redirect()->to('/cuti')->with('error','Akses ditolak');
+        }
+        $cuti = new CutiModel();
+        // VALIDASI
+        if(!$this->request->getPost('tanggal_mulai') || !$this->request->getPost('tanggal_selesai')){
+            return redirect()->back()->with('error','Tanggal wajib diisi');
         }
 
-        $data['cuti']   = $query->orderBy('id', 'DESC')->findAll();
-        $data['start']  = $start;
-        $data['end']    = $end;
-        $data['status'] = $status ?? 'all';
-
-        return view('cuti', $data);
+        $cuti->save([
+            'nama_karyawan'   => session()->get('username'),
+            'tanggal_mulai'   => $this->request->getPost('tanggal_mulai'),
+            'tanggal_selesai' => $this->request->getPost('tanggal_selesai'),
+            'keterangan'      => $this->request->getPost('keterangan'),
+            'status'          => 'pending'
+        ]);
+        return redirect()->to('/cuti')->with('success', 'Pengajuan cuti berhasil');
     }
 
     // =========================
@@ -46,23 +78,29 @@ class Cuti extends BaseController
     // =========================
     public function approve($id)
     {
+        if(session()->get('role') != 'admin'){
+        return redirect()->to('/cuti')->with('error','Akses ditolak');
+        }
+
         $cuti = new CutiModel();
         $log  = new LogModel();
         $abs  = new AbsensiModel();
 
-        $data = $cuti->where('id', $id)->first();
+        $data = $cuti->find($id);
 
         if (!$data) {
         return redirect()->to('/cuti')->with('error', 'Data tidak ditemukan');
         }
-
-        // validasi tanggal
-        if (empty($data['tanggal_mulai']) || empty($data['tanggal_selesai'])) {
-        return redirect()->to('/cuti')->with('error', 'Tanggal kosong');
+        // cegah approve ulang
+        if($data['status'] != 'pending'){
+            return redirect()->to('/cuti')->with('error','Cuti sudah diproses');
         }
-
-        // update status cuti
-        $cuti->update($id, ['status' => 'disetujui']);
+        // update status + info approval
+        $cuti->update($id, [
+            'status'       => 'disetujui',
+            'approved_by'  => session()->get('username'),
+            'approved_at'  => date('Y-m-d H:i:s')
+        ]);
 
         // =========================
         // INTEGRASI ABSENSI
@@ -112,6 +150,10 @@ class Cuti extends BaseController
     // =========================
     public function reject($id)
     {
+        if(session()->get('role') != 'admin'){
+            return redirect()->to('/cuti')->with('error','Akses ditolak');
+        }
+
         $cuti = new CutiModel();
         $log  = new LogModel();
 
@@ -119,6 +161,9 @@ class Cuti extends BaseController
 
         if (!$data) {
             return redirect()->to('/cuti')->with('error', 'Data tidak ditemukan');
+        }
+        if($data['status'] != 'pending'){
+            return redirect()->to('/cuti')->with('error','Cuti sudah diproses');
         }
 
         $cuti->update($id, ['status' => 'ditolak']);

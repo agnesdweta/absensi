@@ -1,7 +1,15 @@
 <?= $this->extend('layout/admin'); ?>
 <?= $this->section('content'); ?>
 
-<h3>Data Cuti</h3>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Data Cuti</h3>
+
+    <?php if(session()->get('role') == 'user'): ?>
+    <a href="<?= base_url('cuti/create') ?>" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Ajukan Cuti
+    </a>
+    <?php endif; ?>
+</div>
 
 <?php if(session()->getFlashdata('success')): ?>
 <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
@@ -47,6 +55,7 @@
     </thead>
 
     <tbody>
+<?php if(!empty($cuti)): ?>
     <?php $no=1; foreach($cuti as $c): ?>
     <tr>
         <td><?= $no++ ?></td>
@@ -67,26 +76,27 @@
             <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#detail<?= $c['id'] ?>">
                 Detail
             </button>
+            <?php if(session()->get('role') == 'admin'): ?>
 
             <?php if($c['status']=='pending'): ?>
-                <a href="<?= base_url('cuti/approve/'.$c['id']) ?>" 
-                   class="btn btn-success btn-sm"
-                   onclick="return confirm('Setujui cuti ini?')">
-                   ✔
-                </a>
-
-                <a href="<?= base_url('cuti/reject/'.$c['id']) ?>" 
-                   class="btn btn-danger btn-sm"
-                   onclick="return confirm('Tolak cuti ini?')">
-                   ✖
-                </a>
+                <a href="<?= base_url('cuti/approve/'.$c['id']) ?>" class="btn btn-success btn-sm">✔</a>
+                <a href="<?= base_url('cuti/reject/'.$c['id']) ?>" class="btn btn-danger btn-sm">✖</a>
             <?php else: ?>
                 <span class="text-muted">Selesai</span>
             <?php endif; ?>
+            <?php else: ?>
+                <!-- USER -->
+        <span class="text-muted">Menunggu / Diproses</span>
+        <?php endif; ?>
         </td>
     </tr>
     <?php endforeach; ?>
-    </tbody>
+<?php else: ?>
+    <tr>
+        <td colspan="5" class="text-center">Tidak ada data</td>
+    </tr>
+<?php endif; ?>
+</tbody>
 </table>
 
 <!-- MODAL (PINDAH KE BAWAH) -->
