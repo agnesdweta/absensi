@@ -1,8 +1,9 @@
+<?php helper(['url']); ?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard Absensi</title>
+    <title>User Dashboard - Absensi</title>
 
     <!-- AdminLTE + Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
@@ -12,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
 
 <div class="wrapper">
 
@@ -29,7 +30,11 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item mr-3">
                 <span class="text-dark">
-                    👤 <?= session()->get('username') ?? 'User'; ?>
+                    👤 
+                    <?php
+                        $username = session()->get('username');
+                        echo $username ? $username : 'User';
+                    ?>
                 </span>
             </li>
 
@@ -44,66 +49,43 @@
     <!-- SIDEBAR -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
-        <a href="#" class="brand-link text-center">
+        <a href="<?= base_url('dashboard') ?>" class="brand-link text-center">
             <span class="brand-text font-weight-light">ABSENSI APP</span>
         </a>
 
         <div class="sidebar">
-
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column">
 
-                    <!-- Dashboard -->
+                    <!-- DASHBOARD -->
                     <li class="nav-item">
                         <a href="<?= base_url('dashboard') ?>" 
-                           class="nav-link <?= uri_string() == 'dashboard' ? 'active' : '' ?>">
+                           class="nav-link <?= service('uri')->getSegment(1) == 'dashboard' ? 'active' : '' ?>">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Dashboard</p>
                         </a>
                     </li>
-                    <?php if(session()->get('role') == 'admin'): ?>
 
-                    <!-- Karyawan (ADMIN SAJA) -->
-        <li class="nav-item">
-            <a href="<?= base_url('karyawan') ?>" 
-               class="nav-link <?= uri_string() == 'karyawan' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-users"></i>
-                <p>Karyawan</p>
-            </a>
-        </li>
+                    <!-- ABSENSI -->
+                    <li class="nav-item">
+                        <a href="<?= base_url('absensi') ?>" 
+                           class="nav-link <?= service('uri')->getSegment(1) == 'absensi' ? 'active' : '' ?>">
+                            <i class="nav-icon fas fa-clock"></i>
+                            <p>Absensi</p>
+                        </a>
+                    </li>
 
-    <?php endif; ?>
+                    <!-- CUTI -->
+                    <li class="nav-item">
+                        <a href="<?= base_url('cuti') ?>" 
+                           class="nav-link <?= service('uri')->getSegment(1) == 'cuti' ? 'active' : '' ?>">
+                            <i class="nav-icon fas fa-calendar"></i>
+                            <p>Cuti Saya</p>
+                        </a>
+                    </li>
 
-    <!-- Absensi (SEMUA ROLE) -->
-    <li class="nav-item">
-        <a href="<?= base_url('admin/absensi') ?>" 
-           class="nav-link <?= uri_string() == 'absensi' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-clock"></i>
-            <p>Absensi</p>
-        </a>
-    </li>
-
-    <!-- Cuti (SEMUA ROLE) -->
-    <li class="nav-item">
-        <a href="<?= base_url('admin/cuti') ?>" 
-           class="nav-link <?= uri_string() == 'cuti' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-calendar"></i>
-            <p>Data Cuti</p>
-        </a>
-    </li>
-    <!-- Log (ADMIN SAJA) -->
-        <li class="nav-item">
-            <a href="<?= base_url('log') ?>" 
-               class="nav-link <?= uri_string() == 'log' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-history"></i>
-                <p>Log Aktivitas</p>
-            </a>
-        </li>
-
-</ul>
-
+                </ul>
             </nav>
-
         </div>
     </aside>
 
@@ -111,6 +93,11 @@
     <div class="content-wrapper p-3">
         <?= $this->renderSection('content'); ?>
     </div>
+
+    <!-- FOOTER -->
+    <footer class="main-footer text-center">
+        <strong>Absensi App &copy; <?= date('Y'); ?></strong>
+    </footer>
 
 </div>
 

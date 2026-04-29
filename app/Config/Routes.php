@@ -5,37 +5,64 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/login', 'Login::index');
-$routes->post('/login/auth', 'Login::auth');
-$routes->get('/logout', 'Login::logout');
 
-// Dashboard (setelah login)
-$routes->get('/', 'Dashboard::index', ['filter' => 'auth']); 
-$routes->get('/dashboard', 'Dashboard::index', ['filter' => 'auth']); 
+// ================= AUTH =================
+$routes->get('login', 'Login::index');
+$routes->post('login/auth', 'Login::auth');
+$routes->get('logout', 'Login::logout');
 
-// Karyawan
-$routes->get('/karyawan', 'Karyawan::index', ['filter' => 'auth']);
-$routes->get('/karyawan/create', 'Karyawan::create');
-$routes->post('/karyawan/store', 'Karyawan::store');
-$routes->get('/karyawan/edit/(:num)', 'Karyawan::edit/$1');
-$routes->post('/karyawan/update/(:num)', 'Karyawan::update/$1');
-$routes->get('/karyawan/delete/(:num)', 'Karyawan::delete/$1');
 
-//Absensi
-$routes->get('/absensi', 'Absensi::index');
-$routes->get('/absensi/create', 'Absensi::create');
-$routes->post('/absensi/store', 'Absensi::store');
-$routes->get('/absensi/delete/(:num)', 'Absensi::delete/$1');
-$routes->get('/absensi/edit/(:num)', 'Absensi::edit/$1');
-$routes->post('/absensi/update/(:num)', 'Absensi::update/$1');
+// ================= USER (WAJIB LOGIN) =================
+$routes->group('', ['filter' => 'auth'], function($routes) {
 
-// Cuti
-// CUTI
-$routes->get('/cuti', 'Cuti::index');
-$routes->get('/cuti/create', 'Cuti::create');
-$routes->post('/cuti/store', 'Cuti::store');
-$routes->get('/cuti/approve/(:num)', 'Cuti::approve/$1');
-$routes->get('/cuti/reject/(:num)', 'Cuti::reject/$1');
+    // DASHBOARD USER
+    $routes->get('/', 'Dashboard::index');
+    $routes->get('dashboard', 'Dashboard::index');
 
-// Log
-$routes->get('/log', 'Log::index', ['filter' => 'auth']);
+    // ================= ABSENSI USER =================
+    $routes->get('absensi', 'User\Absensi::index');
+    $routes->get('absensi/masuk', 'User\Absensi::masuk');
+    $routes->get('absensi/pulang/(:num)', 'User\Absensi::pulang/$1');
+
+    // ================= CUTI USER =================
+    $routes->get('cuti', 'User\Cuti::index');
+    $routes->get('cuti/create', 'User\Cuti::create');
+    $routes->post('cuti/store', 'User\Cuti::store');
+
+    // ================= LOG USER =================
+    $routes->get('log', 'Log::index');
+});
+
+
+// ================= ADMIN (WAJIB LOGIN) =================
+$routes->group('admin', ['filter' => 'auth'], function($routes) {
+
+    // DASHBOARD ADMIN
+    $routes->get('dashboard', 'Admin\Dashboard::index');
+
+    // ================= ABSENSI ADMIN =================
+    $routes->get('absensi', 'Admin\Absensi::index');
+    $routes->get('absensi/edit/(:num)', 'Admin\Absensi::edit/$1');
+    $routes->post('absensi/update/(:num)', 'Admin\Absensi::update/$1');
+    $routes->get('absensi/delete/(:num)', 'Admin\Absensi::delete/$1');
+
+    // ================= CUTI ADMIN =================
+    $routes->get('cuti', 'Admin\Cuti::index');
+    $routes->get('cuti/approve/(:num)', 'Admin\Cuti::approve/$1');
+    $routes->get('cuti/reject/(:num)', 'Admin\Cuti::reject/$1');
+
+    // ================= LOG ADMIN (opsional) =================
+    $routes->get('log', 'Log::index');
+});
+
+
+// ================= KARYAWAN (FIXED) =================
+$routes->group('karyawan', ['filter' => 'auth'], function($routes) {
+
+    $routes->get('/', 'Karyawan::index');
+    $routes->get('create', 'Karyawan::create');
+    $routes->post('store', 'Karyawan::store');
+    $routes->get('edit/(:num)', 'Karyawan::edit/$1');
+    $routes->post('update/(:num)', 'Karyawan::update/$1');
+    $routes->get('delete/(:num)', 'Karyawan::delete/$1');
+});

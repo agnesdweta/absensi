@@ -2,16 +2,19 @@
 
 namespace App\Controllers;
 
+use App\Controllers\BaseController;
 use App\Models\LogModel;
 
 class Log extends BaseController
 {
     public function index()
     {
-        $log = new LogModel();
+        $model = new LogModel();
 
-        $data['log'] = $log->orderBy('id','DESC')->findAll();
+        $data['log'] = $model
+            ->orderBy('created_at', 'DESC')
+            ->findAll();
 
-        return view('log', $data);
+        return view('admin/log', $data);
     }
 }

@@ -12,6 +12,8 @@ class AbsensiModel extends Model
     protected $allowedFields = [
         'nama_karyawan',
         'tanggal',
+        'jam_masuk',
+        'jam_pulang',
         'status'
     ];
 }

@@ -1,14 +1,9 @@
-<?= $this->extend('layout/admin'); ?>
+<?= $this->extend('layout/user'); ?>
 <?= $this->section('content'); ?>
 
 <h3>Ajukan Cuti</h3>
 
 <form action="<?= base_url('cuti/store') ?>" method="post">
-
-    <div class="form-group">
-        <label>Nama</label>
-        <input type="text" value="<?= session()->get('username') ?>" class="form-control" readonly>
-    </div>
 
     <div class="form-group">
         <label>Tanggal Mulai</label>
@@ -22,10 +17,10 @@
 
     <div class="form-group">
         <label>Keterangan</label>
-        <textarea name="keterangan" class="form-control"></textarea>
+        <textarea name="keterangan" class="form-control" required></textarea>
     </div>
 
-    <button class="btn btn-success">Ajukan</button>
+    <button class="btn btn-success">Kirim</button>
     <a href="<?= base_url('cuti') ?>" class="btn btn-secondary">Kembali</a>
 
 </form>

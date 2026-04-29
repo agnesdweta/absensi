@@ -1,0 +1,36 @@
+CRITICAL - 2026-04-28 16:38:29 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "user/absensi_create.php"
+[Method: GET, Route: absensi/create]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('user/absensi_create.php')
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('user/absensi_create', [], true)
+ 3 APPPATH\Controllers\User\Absensi.php(25): view('user/absensi_create')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\User\Absensi->create()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\User\Absensi))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-28 16:45:12 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "user/absensi_create.php"
+[Method: GET, Route: absensi/create]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('user/absensi_create.php')
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('user/absensi_create', [], true)
+ 3 APPPATH\Controllers\User\Absensi.php(25): view('user/absensi_create')
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\User\Absensi->create()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\User\Absensi))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-04-28 16:53:53 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "admin/absensi_edit.php"
+[Method: GET, Route: admin/absensi/edit/2]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('admin/absensi_edit.php')
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('admin/absensi_edit', [], true)
+ 3 APPPATH\Controllers\Admin\Absensi.php(30): view('admin/absensi_edit', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Admin\Absensi->edit('2')
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin\Absensi))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

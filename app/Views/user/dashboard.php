@@ -1,4 +1,4 @@
-<?= $this->extend('layout/admin'); ?>
+<?= $this->extend('layout/user'); ?>
 <?= $this->section('content'); ?>
 
 <h3>Dashboard Karyawan</h3>
